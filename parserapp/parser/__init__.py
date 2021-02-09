@@ -72,7 +72,19 @@ def merge_groups(rozklad_groups, campus_groups):
         return rozklad
 
     if len(rozklad_groups) == len(campus_groups) == 1:
-        return merge_group(rozklad_groups[0], campus_groups[0])
+        yield merge_group(rozklad_groups[0], campus_groups[0])
+        return
+
+    for rg in rozklad_groups:
+        cathedra = rg._group_info.rozklad_cathedra
+        for cs in campus_groups:
+            if cathedra in cs.cathedra.name:
+                yield merge_group(rg, cs)
+                break
+        else:
+            raise Exception(rg)
+
+    # todo check
 
 
 if __name__ == '__main__':
