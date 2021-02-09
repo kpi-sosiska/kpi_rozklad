@@ -1,4 +1,5 @@
 import re
+from collections import namedtuple
 from functools import cached_property
 
 from django.db import models
@@ -12,6 +13,7 @@ GROUP_CODE_RE = re.compile(
     r'(.*?)'
     r'(?:\((\S+)\))?'
 )
+GroupCode = namedtuple('GroupCode', ['prefix', 'm1', 'year', 'number', 'm2', 'm3', 'rozklad_cathedra'])
 
 
 class Faculty(models.Model):
@@ -37,15 +39,15 @@ class Group(models.Model):
     cathedra = models.ForeignKey(Cathedra, on_delete=models.CASCADE)
 
     @cached_property
-    def _parse(self):
-        return list(GROUP_CODE_RE.search(self.name_rozklad).groups())
+    def _group_info(self):
+        return GroupCode(*GROUP_CODE_RE.search(self.name_rozklad).groups())
 
     def prefix(self):
-        return self._parse[0]
+        return self._group_info.prefix
 
     def okr(self):
         # todo wrong
-        r = self._parse[1]
+        r = self._group_info.m2
         if 'м' in r:
             return 'magister'
         if 'с' in r:
@@ -53,12 +55,10 @@ class Group(models.Model):
         return 'bachelor'
 
     def type(self):
-        if 'з' in self._parse[1]:
+        # todo wrong
+        if 'з' in self._group_info.m1:
             return 'extramural'
         return 'daily'
-
-    def cathedra_rozklad(self):
-        return self._parse[6]
 
 
 
