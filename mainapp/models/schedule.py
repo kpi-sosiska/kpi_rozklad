@@ -24,13 +24,13 @@ class Subject(models.Model):
 
 
 class Lesson(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='lessons')
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='lessons')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='lessons')
 
     lesson_type = models.CharField(max_length=50, null=True)
 
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='lessons')
 
     lesson_semestr = models.PositiveSmallIntegerField(choices=_range2choices(1, 2))
     lesson_week = models.PositiveSmallIntegerField(choices=_range2choices(1, 2))

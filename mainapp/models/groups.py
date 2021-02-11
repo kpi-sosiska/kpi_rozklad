@@ -32,7 +32,7 @@ class Cathedra(models.Model):
     name = models.CharField(max_length=20)
     name_campus = models.CharField(max_length=20)
     title = models.CharField(max_length=500)
-    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
+    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name='cathedras')
 
     def __str__(self):
         return f'{self.name} ({self.name_campus})'
@@ -43,7 +43,7 @@ class Group(models.Model):
     name = models.CharField(max_length=500)
     name_rozklad = models.CharField(max_length=20)
     url_rozklad = models.CharField(max_length=500)
-    cathedra = models.ForeignKey(Cathedra, on_delete=models.CASCADE)
+    cathedra = models.ForeignKey(Cathedra, on_delete=models.CASCADE, related_name='groups')
 
     def __str__(self):
         return f'{self.name_rozklad} ({self.name})'
