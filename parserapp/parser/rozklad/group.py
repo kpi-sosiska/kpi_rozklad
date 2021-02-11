@@ -14,16 +14,19 @@ GROUP_BY_URL = {
 
 URL_SELECT_GROUP = "http://rozklad.kpi.ua/Schedules/ScheduleGroupSelection.aspx"
 
+GROUPS_NOT_FOUND_STR = 'не знайдено!'
+
 
 async def get_group(session, group_name):
     def make_group(group_name_, group_url, html1, html2):
         group = Group(name=group_name, name_rozklad=group_name_, url_rozklad=group_url)
         lessons = parse_lessons((html1, html2), group=group)
-        return group, list(lessons)
+        group._lessons = list(lessons)
+        return group
 
     def parse_lessons(semestrs, group):
         def parse_lesson(lesson):
-            subjects, teachers, rooms = [], [], []
+            subjects, teachers, rooms, types = [], [], [], []
             for link in lesson.find_all('a'):
                 href = link.attrs['href']
                 if href.startswith('http://wiki'):
@@ -31,12 +34,15 @@ async def get_group(session, group_name):
                 if href.startswith('/Schedules'):
                     teachers.append(Teacher(name=link.text, url_rozklad='http://rozklad.kpi.ua' + href))
                 if href.startswith('http://maps'):
-                    rooms.append(Room(name=link.text, url_maps=href))
-            for s, t, r in zip(subjects, teachers, rooms):
+                    room, _, type_ = link.text.rpartition(' ')
+                    lat, lon = href.split('=')[1].split(',')
+                    rooms.append(Room(name=room, lat=lat, lon=lon))
+                    types.append(type_)
+            for su, te, ro, ty in zip(subjects, teachers, rooms, types):
                 yield Lesson(
-                    subject=s, teacher=t, room=r,
-                    group=group,
-                    lesson_semestr=semestr_i, lesson_week=week_i,
+                    subject=su, teacher=te, room=ro,
+                    lesson_type=ty, group=group,
+                    lesson_semestr=semestr_i+1, lesson_week=week_i+1,
                     lesson_day=day_i, lesson_num=lesson_i,
                 )
 
@@ -53,6 +59,8 @@ async def get_group(session, group_name):
                         yield from parse_lesson(td)
 
     async def parse_anomaly_groups(html):
+        if GROUPS_NOT_FOUND_STR in html:
+            return []
         soup = BeautifulSoup(html, features='lxml')
         links = soup.find('table').find_all('a')
         return [
