@@ -10,7 +10,7 @@ def _range2choices(start, stop):
 class Teacher(models.Model):
     url_rozklad = models.CharField(max_length=500, primary_key=True)
     name = models.CharField(max_length=500)
-    full_name = models.CharField(max_length=500)
+    name_full = models.CharField(max_length=500)
     cathedras = models.ManyToManyField(Cathedra, related_name='teachers')
 
 
