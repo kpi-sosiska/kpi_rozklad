@@ -1,0 +1,71 @@
+CAMPUS NO GROUP  ФБ-01ф
+CAMPUS NO GROUP  ФІ-01ф
+CAMPUS NO GROUP  ФЛ-71-2
+CAMPUS NO GROUP  ФЛ-в01ф
+CAMPUS NO GROUP  ФН-в01ф
+CAMPUS != ROZKLAD [<Group: ФС-01ф (ФIЛ) (ФС-01ф)>, <Group: ФС-01ф (ФХОТМ) (ФС-01ф)>] [<Group:  (ФС-01ф)>]
+CAMPUS NO GROUP  ФС-91ф
+CAMPUS NO GROUP  СЛ-91ф
+CAMPUS != ROZKLAD [<Group: СР-01мп (ВСтаР) (СР-01мп)>, <Group: СР-01мп (ФIЛ) (СР-01мп)>] [<Group:  (СР-01мп)>, <Group:  (СР-01мп)>]
+CAMPUS != ROZKLAD [<Group: СР-01мп (ВСтаР) (СР-01мп)>, <Group: СР-01мп (ФIЛ) (СР-01мп)>] [<Group:  (СР-01мп)>, <Group:  (СР-01мп)>]
+CAMPUS != ROZKLAD [<Group: СР-71 (ВСтаР) (СР-71)>, <Group: СР-71 (ФIЛ) (СР-71)>] [<Group:  (СР-71)>, <Group:  (СР-71)>]
+CAMPUS != ROZKLAD [<Group: СР-71 (ВСтаР) (СР-71)>, <Group: СР-71 (ФIЛ) (СР-71)>] [<Group:  (СР-71)>, <Group:  (СР-71)>]
+CAMPUS != ROZKLAD [<Group: СР-81 (ВСтаР) (СР-81)>, <Group: СР-81 (ФIЛ) (СР-81)>] [<Group:  (СР-81)>, <Group:  (СР-81)>]
+CAMPUS != ROZKLAD [<Group: СР-81 (ВСтаР) (СР-81)>, <Group: СР-81 (ФIЛ) (СР-81)>] [<Group:  (СР-81)>, <Group:  (СР-81)>]
+CAMPUS != ROZKLAD [<Group: СР-91 (ВСтаР) (СР-91)>, <Group: СР-91 (ФIЛ) (СР-91)>] [<Group:  (СР-91)>, <Group:  (СР-91)>]
+CAMPUS != ROZKLAD [<Group: СР-91 (ВСтаР) (СР-91)>, <Group: СР-91 (ФIЛ) (СР-91)>] [<Group:  (СР-91)>, <Group:  (СР-91)>]
+CAMPUS NO GROUP  АК-01
+CAMPUS NO GROUP  АК-01мп
+CAMPUS NO GROUP  АК-02
+CAMPUS NO GROUP  АК-04
+CAMPUS NO GROUP  АК-91
+CAMPUS NO GROUP  ЛА-з01ф
+CAMPUS != ROZKLAD [<Group: ЛА-п01 (ТПЗА) (ЛА-п01)>, <Group: ЛА-п01 (ТППАМ) (ЛА-п01)>] []
+CAMPUS NO GROUP  ЛА-п02
+CAMPUS NO GROUP  ЛЕ-01ф
+CAMPUS NO GROUP  ЛЕ-91ф
+CAMPUS NO GROUP  ЛН-01ф
+CAMPUS != ROZKLAD [<Group: ЛН-91мн (МАХНВ) (ЛН-91мн)>, <Group: ЛН-91мн (МАХНВ) (ЛН-91мн)>] []
+CAMPUS NO GROUP  ЛН-91ф
+CAMPUS != ROZKLAD [<Group: ЛН-п01 (МАХНВ) (ЛН-п01)>, <Group: ЛН-п01 (ТППНМ) (ЛН-п01)>] []
+CAMPUS NO GROUP  ЛУ-91ф
+CAMPUS NO GROUP  ЛФ-п01
+CAMPUS NO GROUP  ЛЦ-01ф
+CAMPUS NO GROUP  ЗВ-зп01
+CAMPUS NO GROUP  ОЕ-01ф
+CAMPUS NO GROUP  ОЕ-зп01
+CAMPUS != ROZKLAD [<Group: ОМ-01мн (ЕМОЕВ) (ОМ-01мн)>, <Group: ОМ-01мн (МАтаТІ) (ОМ-01мн)>] [<Group:  (ОМ-01мн)>]
+CAMPUS != ROZKLAD [<Group: ОМ-01мп (ЕМОЕВ) (ОМ-01мп)>, <Group: ОМ-01мп (МАтаТІ) (ОМ-01мп)>] [<Group:  (ОМ-01мп)>]
+CAMPUS != ROZKLAD [<Group: ОМ-01ф (ЕМОЕВ) (ОМ-01ф)>, <Group: ОМ-01ф (МАтаТІ) (ОМ-01ф)>] [<Group:  (ОМ-01ф)>]
+CAMPUS != ROZKLAD [<Group: ОМ-71 (ЕМОЕВ) (ОМ-71)>, <Group: ОМ-71 (МАтаТІ) (ОМ-71)>] [<Group:  (ОМ-71)>]
+CAMPUS != ROZKLAD [<Group: ОМ-81 (ЕМОЕВ) (ОМ-81)>, <Group: ОМ-81 (МАтаТІ) (ОМ-81)>] [<Group:  (ОМ-81)>]
+CAMPUS != ROZKLAD [<Group: ОМ-91 (ЕМОЕВ) (ОМ-91)>, <Group: ОМ-91 (МАтаТІ) (ОМ-91)>] [<Group:  (ОМ-91)>]
+CAMPUS != ROZKLAD [<Group: ОМ-91мн (ЕМОЕВ) (ОМ-91мн)>, <Group: ОМ-91мн (МАтаТІ) (ОМ-91мн)>] [<Group:  (ОМ-91мн)>]
+CAMPUS != ROZKLAD [<Group: ОМ-91ф (ЕМОЕВ) (ОМ-91ф)>, <Group: ОМ-91ф (МАтаТІ) (ОМ-91ф)>] [<Group:  (ОМ-91ф)>]
+CAMPUS NO GROUP  ОН-01ф
+CAMPUS NO GROUP  ОН-з01мп
+CAMPUS NO GROUP  ОС-01мн
+CAMPUS NO GROUP  ОС-01ф
+CAMPUS NO GROUP  ОТ-19ф
+CAMPUS NO GROUP  МА-01ф
+CAMPUS NO GROUP  МВ-01ф
+CAMPUS != ROZKLAD [<Group: БМ-01мп (БІ) (БМ-01мп)>, <Group: БМ-01мп (БМІ) (БМ-01мп)>] [<Group:  (БМ-01мп)>, <Group:  (БМ-01мп)>]
+CAMPUS NO GROUP  БМ-03і
+CAMPUS != ROZKLAD [<Group: БМ-71 (БІ) (БМ-71)>, <Group: БМ-71 (БМІ) (БМ-71)>] [<Group:  (БМ-71)>, <Group:  (БМ-71)>]
+CAMPUS != ROZKLAD [<Group: БМ-81 (БІ) (БМ-81)>, <Group: БМ-81 (БМІ) (БМ-81)>] [<Group:  (БМ-81)>, <Group:  (БМ-81)>]
+CAMPUS != ROZKLAD [<Group: БМ-91 (БІ) (БМ-91)>, <Group: БМ-91 (БМІ) (БМ-91)>] [<Group:  (БМ-91)>, <Group:  (БМ-91)>]
+CAMPUS NO GROUP  БМ-93і
+CAMPUS NO GROUP  ВЛ-зп84
+CAMPUS NO GROUP  ПС-20ф
+CAMPUS NO GROUP  ПС-91ф
+CAMPUS NO GROUP  ПУ-02мп
+CAMPUS NO GROUP  ПУА-01ф
+CAMPUS NO GROUP  ПУА-91ф
+CAMPUS NO GROUP  ІАР-01ф
+CAMPUS NO GROUP  ІАР-91ф
+CAMPUS NO GROUP  ІО-з82
+CAMPUS NO GROUP  ІП-01ф
+CAMPUS NO GROUP  ІП-02ф
+CAMPUS NO GROUP  ІП-92ф
+CAMPUS NO GROUP  ІП-з91ф
+CAMPUS NO GROUP  ІС-01ф

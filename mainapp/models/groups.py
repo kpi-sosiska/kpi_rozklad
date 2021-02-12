@@ -5,22 +5,10 @@ from functools import cached_property
 from django.db import models
 
 
-GROUP_CODE_RE = re.compile(
-    r'(\w{2,3})-'
-    r'([зпвф]*)'
-    r'(\d)(\d)'
-    r'([мнпфі]*)'
-    r'(-\d)?'
-    r'(?: \((.*)\))?'
-)
-# todo understandable names (how?)
-GroupCode = namedtuple('GroupCode', ['prefix', 'm1', 'year', 'number', 'm2', 'm3', 'rozklad_cathedra'])
-
-
 class Faculty(models.Model):
     id_campus = models.PositiveSmallIntegerField(primary_key=True)
     name = models.CharField(max_length=20)
-    name_campus = models.CharField(max_length=20)
+    name_campus = models.CharField(max_length=20)  # translit name
     title = models.CharField(max_length=500)
 
     def __str__(self):
@@ -29,8 +17,9 @@ class Faculty(models.Model):
 
 class Cathedra(models.Model):
     id_campus = models.PositiveSmallIntegerField(primary_key=True)
-    name = models.CharField(max_length=20)
-    name_campus = models.CharField(max_length=20)
+    name = models.CharField(max_length=20)  # abbreviation + faculty
+    name_short = models.CharField(max_length=20)  # abbreviation
+    name_campus = models.CharField(max_length=20)  # == translit name
     title = models.CharField(max_length=500)
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name='cathedras')
 
@@ -40,10 +29,21 @@ class Cathedra(models.Model):
 
 class Group(models.Model):
     id_campus = models.PositiveSmallIntegerField(primary_key=True)
-    name = models.CharField(max_length=500)
-    name_rozklad = models.CharField(max_length=20)
+    name = models.CharField(max_length=500)  # name in campus
+    name_rozklad = models.CharField(max_length=20)  # name in rozklad, maybe cathedra at the end
     url_rozklad = models.CharField(max_length=500)
     cathedra = models.ForeignKey(Cathedra, on_delete=models.CASCADE, related_name='groups')
+
+    RE_GROUP_CODE = re.compile(
+        r'(\w{2,3})-'
+        r'([зпвф]*)'
+        r'(\d)(\d)'
+        r'([мнпфі]*)'
+        r'(-\d)?'
+        r'(?: \((.*)\))?'
+    )
+    # todo understandable names (how?)
+    GroupCode = namedtuple('GroupCode', ['prefix', 'm1', 'year', 'number', 'm2', 'm3', 'rozklad_cathedra'])
 
     def __str__(self):
         return f'{self.name_rozklad} ({self.name})'
@@ -75,7 +75,7 @@ class Group(models.Model):
 
     @classmethod
     def _parse_name(cls, name):
-        return GroupCode(*GROUP_CODE_RE.search(name).groups())
+        return cls.GroupCode(*cls.RE_GROUP_CODE.search(name).groups())
 
 
 
