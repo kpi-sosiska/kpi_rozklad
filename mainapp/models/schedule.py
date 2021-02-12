@@ -1,5 +1,5 @@
 from django.db import models
-from .groups import Group
+from .groups import Group, Cathedra
 
 
 def _range2choices(start, stop):
@@ -10,6 +10,8 @@ def _range2choices(start, stop):
 class Teacher(models.Model):
     url_rozklad = models.CharField(max_length=500, primary_key=True)
     name = models.CharField(max_length=500)
+    full_name = models.CharField(max_length=500)
+    cathedras = models.ManyToManyField(Cathedra, related_name='teachers')
 
 
 class Room(models.Model):
@@ -24,20 +26,20 @@ class Subject(models.Model):
 
 
 class Lesson(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='lessons')
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='lessons')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='lessons')
 
     lesson_type = models.CharField(max_length=50, null=True)
 
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='lessons')
 
-    lesson_semestr = models.PositiveSmallIntegerField(choices=_range2choices(1, 2))
-    lesson_week = models.PositiveSmallIntegerField(choices=_range2choices(1, 2))
-    lesson_day = models.PositiveSmallIntegerField(choices=_range2choices(0, 6))
-    lesson_num = models.PositiveSmallIntegerField(choices=_range2choices(0, 6))
+    semestr = models.PositiveSmallIntegerField(choices=_range2choices(1, 2))
+    week = models.PositiveSmallIntegerField(choices=_range2choices(1, 2))
+    day = models.PositiveSmallIntegerField(choices=_range2choices(0, 6))
+    num = models.PositiveSmallIntegerField(choices=_range2choices(0, 6))
 
     class Meta:
         unique_together = (
-            ('group', 'lesson_semestr', 'lesson_week', 'lesson_day', 'lesson_num', 'subject'),
+            ('group', 'semestr', 'week', 'day', 'num', 'subject', 'teacher'),
         )
