@@ -3,7 +3,7 @@ from django.db import transaction
 from parserapp.parser.scrappers import get_faculties, get_cathedras
 
 
-async def faculties_and_cathedras():
+async def save_faculties_and_cathedras():
     faculties = await get_faculties()
     for faculty in faculties:
         with transaction.atomic():

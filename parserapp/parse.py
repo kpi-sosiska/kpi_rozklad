@@ -1,12 +1,17 @@
 import asyncio
 
-from parserapp.parser.parser import faculties_and_cathedras, groups, teachers
+import aiohttp
+
+from parserapp.parser.parser import save_faculties_and_cathedras, parse_and_save_all_groups, teachers
 
 
 async def main():
-    # await faculties_and_cathedras()
-    # await groups()
-    await teachers()
+    session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=20))
+    await session.close()
+
+    await save_faculties_and_cathedras()
+    await parse_and_save_all_groups()
+    await update_all_teachers()
 
 
 if __name__ == '__main__':

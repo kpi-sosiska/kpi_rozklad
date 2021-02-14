@@ -1,54 +1,52 @@
-import aiohttp
-from django.db import transaction
-
 from parserapp.parser.parser.utils import try_
-from parserapp.parser.scrappers import get_disciplines, get_group, get_groups_list, find_group
+from parserapp.parser.scrappers import get_disciplines, get_groups_by_name, get_group_by_url, get_groups_list, find_group
 
 
-async def groups():
-    async for group in get_groups():
-        with transaction.atomic():
-            group.save()
-            group.lessons.all().delete()
-            for lesson in group._lessons:
-                lesson.teacher.save()
-                lesson.room.save()
-                lesson.subject.save()
-                lesson.group = group
-                lesson.save()
+async def update_group_schedule(group_model, session):
+    group = await try_(lambda g=group_model.url_rozklad: get_group_by_url(session, g))  # отсюда нужны только lessons
+    group_model.save_with_lessons(group._lessons)
 
 
-async def get_groups():
-    session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=20))
+async def parse_and_save_all_groups(session):
+    async for group in _parse_all_groups(session):
+        group.save_with_lessons(group._lessons)
 
+
+#
+
+
+async def _parse_all_groups_names(session):
     # rozklad_groups_names = await get_groups_list(session)
     rozklad_groups_names = [s.strip() for s in open('parser/stuff/rozklad_groups_short.txt')]
     # rozklad_groups_names = rozklad_groups_names[rozklad_groups_names.index('ІК-01'):][:50]
+    return rozklad_groups_names
 
+
+async def _parse_all_groups(session):
+    rozklad_groups_names = await _parse_all_groups_names(session)
     for group_name in rozklad_groups_names:
-        groups = await get_groups_(session, group_name)
+        groups = await _parse_groups_by_name(group_name, session)
         for g in groups:
             yield g
 
-    await session.close()
 
-
-async def get_groups_(session, group_name):
-    rozklad_groups = await try_(lambda g=group_name: get_group(session, g))
+async def _parse_groups_by_name(group_name, session):
+    rozklad_groups = await try_(lambda g=group_name: get_groups_by_name(session, g))
 
     rozklad_groups = [g for g in rozklad_groups if g._lessons]
     if not rozklad_groups:
+        print("ROZKLAD NO GROUP ", group_name)
         return []
 
-    campus_groups = await find_campus_groups(group_name)
+    campus_groups = await _find_campus_groups(group_name)
     if not campus_groups:
         print("CAMPUS NO GROUP ", group_name)
         return []
 
-    return await merge_rozklad_with_campus(rozklad_groups, campus_groups)
+    return await _merge_rozklad_with_campus(rozklad_groups, campus_groups)
 
 
-async def merge_rozklad_with_campus(rozklad_groups, campus_groups):
+async def _merge_rozklad_with_campus(rozklad_groups, campus_groups):
     def merge_group(rozklad, campus):
         for i in ('id_campus', 'name', 'cathedra_id'):
             setattr(rozklad, i, getattr(campus, i))
@@ -93,19 +91,11 @@ async def merge_rozklad_with_campus(rozklad_groups, campus_groups):
     # todo check
 
 
-async def find_campus_groups(group_name):
+async def _find_campus_groups(group_name):
     async def _find(name):
         campus_groups = await try_(lambda g=name: find_group(g))
         campus_groups = [g for g in campus_groups if g.name == name]
         return campus_groups
 
-    # _ = Group._parse_name(group_name)
-    # normalized_group_name = ''.join((
-    #     _.prefix, '-', _.m1.replace('п', ''),
-    #     _.year, _.number,
-    #     _.m2 + ('п' if 'п' in _.m1 else '')
-    # ))
-    # print(normalized_group_name)
-
-    g = await _find(group_name)
-    return g
+    # maybe group_name normalisation or smth
+    return await _find(group_name)

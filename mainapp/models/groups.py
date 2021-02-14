@@ -2,7 +2,7 @@ import re
 from collections import namedtuple
 from functools import cached_property
 
-from django.db import models
+from django.db import models, transaction
 
 
 class Faculty(models.Model):
@@ -76,6 +76,17 @@ class Group(models.Model):
     @classmethod
     def _parse_name(cls, name):
         return cls.GroupCode(*cls.RE_GROUP_CODE.search(name).groups())
+
+    def save_with_lessons(self, lessons):
+        with transaction.atomic():
+            self.save()
+            self.lessons.all().delete()
+            for lesson in lessons:
+                lesson.teacher.save()
+                lesson.room.save()
+                lesson.subject.save()
+                lesson.group = self
+                lesson.save()
 
 
 
