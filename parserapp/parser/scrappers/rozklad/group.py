@@ -30,9 +30,12 @@ async def get_groups_by_name(group_name, session):
     if str(group_url) == URL_SELECT_GROUP:
         groups = await _parse_anomaly_groups(html1)
         return [_make_group(url_rozklad=group_url,
-                            htmls=[await _group_html_by_url(group_url, semestr, session) for semestr in (1, 2)],
+                            htmls=[
+                                await _group_html_by_url(group_url, semestr, session)
+                                async for semestr in (1, 2)
+                            ],
                             name_rozklad=name_rozklad)
-                for name_rozklad, group_url in groups]
+                async for name_rozklad, group_url in groups]
     else:
         html2 = await _group_html_by_url(group_url, semestr=2, session=session)
         return [_make_group(group_url, (html1, html2), name_rozklad=group_name)]

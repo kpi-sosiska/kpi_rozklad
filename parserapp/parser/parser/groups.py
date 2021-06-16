@@ -31,7 +31,7 @@ async def _parse_all_groups(session):
 
 
 async def _parse_groups_by_name(group_name, session):
-    rozklad_groups = await try_(lambda g=group_name: get_groups_by_name(session, g))
+    rozklad_groups = await try_(lambda g=group_name: get_groups_by_name(g, session))
 
     rozklad_groups = [g for g in rozklad_groups if g._lessons]
     if not rozklad_groups:
