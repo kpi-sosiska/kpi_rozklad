@@ -1,5 +1,6 @@
 import aiohttp
 
+from mainapp.models import Group
 from parserapp.parser.parser.groups_merge import _merge_rozklad_with_campus
 from parserapp.parser.parser.utils import try_
 from parserapp.parser.scrappers import get_groups_by_name, get_group_by_url, get_groups_list, find_group
@@ -23,8 +24,12 @@ async def _parse_all_groups_names(session):
     # rozklad_groups_names = await get_groups_list(session)
     rozklad_groups_names = [s.strip() for s in open('parser/stuff/rozklad_groups_short.txt')]
     # rozklad_groups_names = rozklad_groups_names[rozklad_groups_names.index('ІК-01'):][:50]
+
+    groups_empty = [s.strip() for s in open('parser/stuff/rozklad_empty.txt')]
+    groups_ready = Group.objects.all().values_list('name_rozklad', flat=True)
+
     rozklad_groups_names = list(sorted(
-        set(rozklad_groups_names) - set([s.strip() for s in open('parser/stuff/rozklad_empty.txt')])
+        set(rozklad_groups_names) - set(groups_empty) - set(groups_ready)
     ))
     return rozklad_groups_names
 
