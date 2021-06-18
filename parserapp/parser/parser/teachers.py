@@ -16,7 +16,10 @@ async def update_all_teachers(session):
 
 
 async def update_teacher(teacher_model, session):
-    full_name, cathedras, groups = await try_(lambda t=teacher_model.url_rozklad: get_teacher(session, t))
+    try:
+        full_name, cathedras, groups = await try_(lambda t=teacher_model.url_rozklad: get_teacher(session, t))
+    except:
+        return
 
     teacher_model.full_name = full_name
     teacher_model.cathedras.set(_get_cathedras(cathedras, groups), clear=True)

@@ -13,7 +13,7 @@ def async_bunch(coros, bunch_size=2):
             yield t
 
 
-async def try_(func, attempts=5):
+async def try_(func, attempts=10):
     for attempt in range(attempts - 1):
         try:
             return await func()
