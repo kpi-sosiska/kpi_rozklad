@@ -1,0 +1,29 @@
+sqlite3 db.sqlite3
+
+.headers on
+.mode csv
+.output 'CSV files/mainapp_cathedra.csv'
+SELECT * FROM mainapp_cathedra;
+
+.output 'CSV files/mainapp_faculty.csv'
+SELECT * FROM mainapp_faculty;
+
+.output 'CSV files/mainapp_group.csv'
+SELECT * FROM mainapp_group;
+
+.output 'CSV files/mainapp_lesson.csv'
+SELECT lesson_type, semestr, week, day, num, group_id, room_id, subject_id, teacher_id FROM mainapp_lesson;
+
+.output 'CSV files/mainapp_room.csv'
+SELECT * FROM mainapp_room;
+
+.output 'CSV files/mainapp_subject.csv'
+SELECT * FROM mainapp_subject;
+
+.output 'CSV files/mainapp_teacher.csv'
+SELECT * FROM mainapp_teacher;
+
+.output 'CSV files/mainapp_teacher_cathedras.csv'
+SELECT teacher_id, cathedra_id FROM mainapp_teacher_cathedras;
+
+.quit
