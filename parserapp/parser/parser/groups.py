@@ -23,6 +23,9 @@ async def _parse_all_groups_names(session):
     # rozklad_groups_names = await get_groups_list(session)
     rozklad_groups_names = [s.strip() for s in open('parser/stuff/rozklad_groups_short.txt')]
     # rozklad_groups_names = rozklad_groups_names[rozklad_groups_names.index('ІК-01'):][:50]
+    rozklad_groups_names = list(sorted(
+        set(rozklad_groups_names) - set([s.strip() for s in open('parser/stuff/rozklad_empty.txt')])
+    ))
     return rozklad_groups_names
 
 
@@ -43,6 +46,7 @@ async def _parse_groups_by_name(group_name, session):
 
     rozklad_groups = [g for g in rozklad_groups if g._lessons]
     if not rozklad_groups:
+        open('parser/stuff/rozklad_empty.txt', 'a').write(group_name + '\n')
         print("ROZKLAD NO GROUP ", group_name)
         return
 
