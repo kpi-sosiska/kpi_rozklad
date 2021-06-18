@@ -8,10 +8,14 @@ def _range2choices(start, stop):
 
 
 class Teacher(models.Model):
-    url_rozklad = models.CharField(max_length=500, primary_key=True)
+    uuid_rozklad = models.CharField(max_length=36, primary_key=True)
     name = models.CharField(max_length=500)
     name_full = models.CharField(max_length=500)
     cathedras = models.ManyToManyField(Cathedra, related_name='teachers')
+
+    @property
+    def url_rozklad(self):
+        return "http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?v=" + self.uuid_rozklad
 
 
 class Room(models.Model):
@@ -21,8 +25,12 @@ class Room(models.Model):
 
 
 class Subject(models.Model):
-    url_wiki = models.CharField(max_length=500, primary_key=True)
+    url_name = models.CharField(max_length=500, primary_key=True)
     name = models.CharField(max_length=500)
+
+    @property
+    def url_wiki(self):
+        return "http://wiki.kpi.ua/index.php/" + self.url_name
 
 
 class Lesson(models.Model):
