@@ -41,10 +41,6 @@ async def _parse_groups_by_name(group_name, session):
         return
 
     campus_groups = await _find_campus_groups(group_name)
-    if not campus_groups:
-        print("CAMPUS NO GROUP ", group_name)
-        return
-
     return _merge_rozklad_with_campus(rozklad_groups, campus_groups)
 
 

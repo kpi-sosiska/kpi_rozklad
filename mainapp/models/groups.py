@@ -29,10 +29,10 @@ class Cathedra(models.Model):
 
 class Group(models.Model):
     uuid_rozklad = models.CharField(max_length=36, primary_key=True)
-    id_campus = models.PositiveSmallIntegerField()
-    name = models.CharField(max_length=500)  # name in campus
+    id_campus = models.PositiveSmallIntegerField(null=True)
+    name = models.CharField(null=True, max_length=500)  # name in campus
     name_rozklad = models.CharField(max_length=20)  # name in rozklad, maybe cathedra at the end
-    cathedra = models.ForeignKey(Cathedra, on_delete=models.CASCADE, related_name='groups')
+    cathedra = models.ForeignKey(Cathedra, null=True, on_delete=models.CASCADE, related_name='groups')
 
     RE_GROUP_CODE = re.compile(
         r'(\w{2,3})-'
