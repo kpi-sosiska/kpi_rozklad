@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 import aiohttp
 
@@ -19,7 +20,8 @@ async def try_(func, attempts=5):
         except (aiohttp.client.ClientError,
                 asyncio.exceptions.TimeoutError,
                 RozkladRetryException
-                ) as ex:
-            print(type(ex), ex, attempt)
+                ):
+            logging.exception(attempt)
+            await asyncio.sleep(5)
     return await func()
 

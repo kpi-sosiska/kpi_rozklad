@@ -1,6 +1,9 @@
+import aiohttp
+
 from parserapp.parser.parser.groups_merge import _merge_rozklad_with_campus
 from parserapp.parser.parser.utils import try_
 from parserapp.parser.scrappers import get_groups_by_name, get_group_by_url, get_groups_list, find_group
+from parserapp.parser.scrappers.rozklad.utils import RozkladRetryException
 
 
 async def update_group_schedule(group_model, session):
@@ -33,7 +36,10 @@ async def _parse_all_groups(session):
 
 
 async def _parse_groups_by_name(group_name, session):
-    rozklad_groups = await try_(lambda g=group_name: get_groups_by_name(g, session))
+    try:
+        rozklad_groups = await try_(lambda g=group_name: get_groups_by_name(g, session))
+    except (RozkladRetryException, aiohttp.client.ClientError):
+        return
 
     rozklad_groups = [g for g in rozklad_groups if g._lessons]
     if not rozklad_groups:
