@@ -9,8 +9,8 @@ async def main():
     session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=20))
 
     await save_faculties_and_cathedras()
-    await parse_and_save_all_groups(session)
-    await update_all_teachers(session)
+    await parse_and_save_all_groups(session, skip_saved=True, skip_empty=True)
+    await update_all_teachers(session, only_without_fullname=True)
 
     await session.close()
 

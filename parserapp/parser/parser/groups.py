@@ -12,35 +12,37 @@ async def update_group_schedule(group_model, session):
     group_model.save_with_lessons(group._lessons)
 
 
-async def parse_and_save_all_groups(session):
-    async for group in _parse_all_groups(session):
+async def parse_and_save_all_groups(session, skip_saved=False, skip_empty=False):
+    async for group in _parse_all_groups(session, skip_saved, skip_empty):
         group.save_with_lessons(group._lessons)
 
 
 #
 
+async def _parse_all_groups(session, skip_saved=False, skip_empty=False):
+    rozklad_groups_names = await _parse_all_groups_names(session, skip_saved, skip_empty)
 
-async def _parse_all_groups_names(session):
-    # rozklad_groups_names = await get_groups_list(session)
-    rozklad_groups_names = [s.strip() for s in open('parser/stuff/rozklad_groups_short.txt')]
-    # rozklad_groups_names = rozklad_groups_names[rozklad_groups_names.index('ІК-01'):][:50]
-
-    groups_empty = [s.strip() for s in open('parser/stuff/rozklad_empty.txt')]
-    groups_ready = Group.objects.all().values_list('name_rozklad', flat=True)
-
-    rozklad_groups_names = list(sorted(
-        set(rozklad_groups_names) - set(groups_empty) - set(groups_ready)
-    ))
-    return rozklad_groups_names
-
-
-async def _parse_all_groups(session):
-    rozklad_groups_names = await _parse_all_groups_names(session)
     for group_name in rozklad_groups_names:
         groups = await _parse_groups_by_name(group_name, session)
         if groups is not None:
             async for g in groups:
                 yield g
+
+
+async def _parse_all_groups_names(session, skip_saved=False, skip_empty=False):
+    rozklad_groups_names = await get_groups_list(session)
+    # rozklad_groups_names = [s.strip() for s in open('parser/stuff/rozklad_groups_short.txt')]
+
+    rozklad_groups_names = set(rozklad_groups_names)
+
+    if skip_saved:
+        rozklad_groups_names -= set(Group.objects.all().values_list('name_rozklad', flat=True))
+
+    if skip_empty:
+        rozklad_groups_names -= {s.strip() for s in open('parser/stuff/rozklad_empty.txt')}
+
+    return list(sorted(rozklad_groups_names))
+
 
 
 async def _parse_groups_by_name(group_name, session):

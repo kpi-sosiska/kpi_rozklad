@@ -8,8 +8,12 @@ from parserapp.parser.parser.utils import try_, async_bunch
 from parserapp.parser.scrappers import get_teacher
 
 
-async def update_all_teachers(session):
-    tasks = [update_teacher(teacher, session) for teacher in Teacher.objects.all()]
+async def update_all_teachers(session, only_without_fullname=False):
+    tasks = [
+        update_teacher(teacher, session)
+        for teacher in Teacher.objects.all()
+        if not (only_without_fullname and teacher.name_full)
+    ]
     for i, task in enumerate(async_bunch(tasks)):
         await task
         print(i, len(tasks))
