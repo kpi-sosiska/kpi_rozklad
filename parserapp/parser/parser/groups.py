@@ -45,7 +45,7 @@ async def _parse_all_groups(session):
 
 async def _parse_groups_by_name(group_name, session):
     try:
-        rozklad_groups = await try_(lambda g=group_name: get_groups_by_name(g, session))
+        rozklad_groups = await try_(lambda g=group_name: get_groups_by_name(g, session), attempts=5)
     except (RozkladRetryException, aiohttp.client.ClientError):
         return
 
