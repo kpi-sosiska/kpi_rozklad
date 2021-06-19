@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 from mainapp.models import Group, Lesson, Teacher, Room, Subject
-from parserapp.parser.scrappers.rozklad.utils import RozkladRetryException
+from parserapp.parser.scrappers.rozklad.utils import RozkladRetryException, remove_rozklad_prefix
 
 GROUP_BY_NAME = {
     "__EVENTVALIDATION": "/wEdAAEAAAD/////AQAAAAAAAAAPAQAAAAUAAAAIsA3rWl3AM+6E94I5Tu9cRJoVjv0LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHfLZVQO6kVoZVPGurJN4JJIAuaU",
@@ -44,7 +44,8 @@ async def get_groups_by_name(group_name, session):
 #
 
 def _make_group(url_rozklad, htmls, name_rozklad=None):
-    group = Group(url_rozklad=url_rozklad, name_rozklad=name_rozklad)
+    uuid = remove_rozklad_prefix(url_rozklad)
+    group = Group(uuid_rozklad=uuid, name_rozklad=name_rozklad)
     group._lessons = list(_parse_lessons(htmls))
     return group
 
@@ -82,10 +83,10 @@ def _parse_lessons(semestrs_htmls):
             href = link.attrs['href']
 
             if href.startswith('http://wiki'):
-                subjects.append(Subject(name=link.text, url_wiki=href))
+                subjects.append(Subject(name=link.text, url_name=href.removeprefix('http://wiki.kpi.ua/index.php/')))
 
             if href.startswith('/Schedules'):
-                teachers.append(Teacher(name=link.text, url_rozklad='http://rozklad.kpi.ua' + href))
+                teachers.append(Teacher(name=link.text, uuid_rozklad=remove_rozklad_prefix(href)))
 
             if href.startswith('http://maps'):
                 room, _, type_ = link.text.partition(' ')
