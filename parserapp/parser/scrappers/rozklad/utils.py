@@ -6,6 +6,7 @@ class RozkladRetryException(Exception):
             raise cls()
 
 
-def remove_rozklad_prefix(url):
-    return str(url).removeprefix('http://rozklad.kpi.ua').removeprefix('/Schedules/ViewSchedule.aspx')\
-        .removeprefix('?v=').removeprefix('?g=')
+def get_rozklad_uuid(url):
+    url = str(url)
+    assert url[-37] == "="
+    return url[-36:]
