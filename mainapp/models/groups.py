@@ -28,11 +28,11 @@ class Cathedra(models.Model):
 
 
 class Group(models.Model):
-    id_campus = models.PositiveSmallIntegerField(primary_key=True)
-    name = models.CharField(max_length=500)  # name in campus
+    uuid_rozklad = models.CharField(max_length=36, primary_key=True)
+    id_campus = models.PositiveSmallIntegerField(null=True)
+    name = models.CharField(null=True, max_length=500)  # name in campus
     name_rozklad = models.CharField(max_length=20)  # name in rozklad, maybe cathedra at the end
-    url_rozklad = models.CharField(max_length=500)
-    cathedra = models.ForeignKey(Cathedra, on_delete=models.CASCADE, related_name='groups')
+    cathedra = models.ForeignKey(Cathedra, null=True, on_delete=models.CASCADE, related_name='groups')
 
     RE_GROUP_CODE = re.compile(
         r'(\w{2,3})-'
@@ -47,6 +47,10 @@ class Group(models.Model):
 
     def __str__(self):
         return f'{self.name_rozklad} ({self.name})'
+
+    @property
+    def url_rozklad(self):
+        return "http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?v=" + self.uuid_rozklad
 
     @cached_property
     def _group_info(self):

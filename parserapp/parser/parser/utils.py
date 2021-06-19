@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 import aiohttp
 
@@ -12,14 +13,15 @@ def async_bunch(coros, bunch_size=2):
             yield t
 
 
-async def try_(func, attempts=5):
+async def try_(func, attempts=10):
     for attempt in range(attempts - 1):
         try:
             return await func()
         except (aiohttp.client.ClientError,
                 asyncio.exceptions.TimeoutError,
                 RozkladRetryException
-                ) as ex:
-            print(type(ex), ex, attempt)
+                ):
+            logging.exception(attempt)
+            await asyncio.sleep(5)
     return await func()
 
