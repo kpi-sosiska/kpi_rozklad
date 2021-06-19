@@ -21,7 +21,7 @@ async def update_teacher(teacher_model, session):
     except:
         return
 
-    teacher_model.full_name = full_name
+    teacher_model.name_full = full_name
     teacher_model.cathedras.set(_get_cathedras(cathedras, groups), clear=True)
 
     teacher_model.save()
