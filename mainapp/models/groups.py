@@ -86,13 +86,8 @@ class Group(models.Model):
             self.save()
             self.lessons.all().delete()
             for lesson in lessons:
-                lesson.teacher.save()
+                lesson.teacher.save(update_fields=['name'])  # d on't delete teacher name_full when parse groups
                 lesson.room.save()
                 lesson.subject.save()
                 lesson.group = self
                 lesson.save()
-
-
-
-
-
