@@ -22,8 +22,9 @@ async def parse_and_save_all_groups(session, skip_saved=False, skip_empty=False)
 async def _parse_all_groups(session, skip_saved=False, skip_empty=False):
     rozklad_groups_names = await _parse_all_groups_names(session, skip_saved, skip_empty)
 
-    for group_name in rozklad_groups_names:
+    for i, group_name in enumerate(rozklad_groups_names):
         groups = await _parse_groups_by_name(group_name, session)
+        print(i, len(rozklad_groups_names))
         if groups is not None:
             async for g in groups:
                 yield g
