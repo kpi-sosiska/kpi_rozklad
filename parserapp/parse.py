@@ -2,7 +2,8 @@ import asyncio
 
 import aiohttp
 
-from parserapp.parser.parser import save_faculties_and_cathedras, parse_and_save_all_groups, update_all_teachers
+from parserapp.parser.parser import save_faculties_and_cathedras, parse_and_save_all_groups,\
+    update_all_teachers, update_subjects
 
 
 async def main():
@@ -11,6 +12,7 @@ async def main():
     await save_faculties_and_cathedras()
     await parse_and_save_all_groups(session, skip_saved=True, skip_empty=True)
     await update_all_teachers(session, only_without_fullname=True)
+    update_subjects()
 
     await session.close()
 

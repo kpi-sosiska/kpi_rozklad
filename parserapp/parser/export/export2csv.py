@@ -22,11 +22,11 @@ with open('mainapp_teacher.csv', mode='w') as csvfile:
 
     writer.writerow(['uuid', 'name', 'is_eng', 'lessons'])
     for teacher in Teacher.objects.all():
-        lessons = teacher.lessons.all().values_list('subject__name', flat=True).distinct()
+        lessons = teacher.lessons.all().values_list('subject__name_normalized', flat=True).distinct()
         lessons = '\n'.join(sorted(lessons))
-        is_eng = bool(is_eng_re.findall(lessons))
+        is_eng = int(bool(is_eng_re.findall(lessons)))
 
-        writer.writerow([teacher.uuid_rozklad, teacher.name, is_eng, lessons])
+        writer.writerow([teacher.uuid_rozklad, teacher.name_full, is_eng, lessons])
 
 # Export faculties
 with open('mainapp_faculty.csv', mode='w') as csvfile:
