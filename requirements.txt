@@ -3,3 +3,4 @@ beautifulsoup4==4.9.3
 Django==3.2.4
 lxml==4.6.3
 pandas~=1.2.4
+graphene_django
