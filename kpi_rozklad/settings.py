@@ -19,6 +19,8 @@ INSTALLED_APPS = [
     'mainapp',
     # 'botapp',
     # 'parserapp'
+
+    'graphene_django'  # pip install graphene-django
 ]
 
 MIDDLEWARE = [
@@ -66,3 +68,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
+
+
+#
+
+GRAPHENE = {
+    'SCHEMA': 'mainapp.schema.schema'  # Where your Graphene schema lives
+}
