@@ -8,10 +8,33 @@ def _range2choices(start, stop):
 
 
 class Teacher(models.Model):
+    POSITIONS_CHOICE = {
+        'ас.': 'асистент',
+        'доц.': 'доцент',
+        'вик.': 'викладач',
+        'ст.вик.': 'старший викладач',
+        'проф.': 'професор',
+        'зав.каф.': 'зав. кафедрою',
+        'дек.': 'декан',
+        # 'пос.': '',
+    }
+
     uuid_rozklad = models.CharField(max_length=36, primary_key=True)
+    position = models.CharField(max_length=10, choices=POSITIONS_CHOICE.items(), null=True)
     name = models.CharField(max_length=500)
-    name_full = models.CharField(max_length=500)
+    name_full = models.CharField(max_length=500, null=True, blank=True)
+    cathedras_rozklad = models.CharField(max_length=500, null=True, blank=True)
     cathedras = models.ManyToManyField(Cathedra, related_name='teachers')
+
+    @classmethod
+    def create(cls, uuid_rozklad, name):
+        name = name.removeprefix('пос.')
+        position = None
+        for pos in cls.POSITIONS_CHOICE:
+            if name.startswith(pos):
+                name = name.removeprefix(pos)
+                position = pos
+        return cls(uuid_rozklad=uuid_rozklad, name=name.strip(), position=position)
 
     @property
     def url_rozklad(self):
@@ -27,6 +50,7 @@ class Room(models.Model):
 class Subject(models.Model):
     url_name = models.CharField(max_length=500, primary_key=True)
     name = models.CharField(max_length=500)
+    name_normalized = models.CharField(max_length=500, null=True)
 
     @property
     def url_wiki(self):

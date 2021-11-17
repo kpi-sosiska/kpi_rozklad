@@ -26,5 +26,6 @@ async def get_teacher(session, url):
 
     full_name, cathedras_names = RE_NAME_CATHEDRA.search(text).groups()
     cathedras_names = cathedras_names.split(', ')
+    cathedras_names = list(filter(None, cathedras_names))
 
     return full_name, cathedras_names, find_groups()

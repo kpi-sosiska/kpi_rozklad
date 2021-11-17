@@ -26,7 +26,7 @@ with open('mainapp_teacher.csv', mode='w') as csvfile:
         lessons = '\n'.join(sorted(lessons))
         is_eng = int(bool(is_eng_re.findall(lessons)))
 
-        writer.writerow([teacher.uuid_rozklad, teacher.name_full, is_eng, lessons])
+        writer.writerow([teacher.uuid_rozklad, teacher.name_full, is_eng, teacher.cathedras_rozklad, lessons])
 
 # Export faculties
 with open('mainapp_faculty.csv', mode='w') as csvfile:
@@ -35,13 +35,6 @@ with open('mainapp_faculty.csv', mode='w') as csvfile:
     writer.writerow(['id', 'name'])
     for faculty in Faculty.objects.all():
         writer.writerow([faculty.id_campus, faculty.name])
-
-# Export cathedras
-with open('mainapp_cathedra.csv', mode='w') as csvfile:
-    writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-    for cathedra in Cathedra.objects.all():
-        writer.writerow([cathedra.id_campus, cathedra.name_short, cathedra.faculty_id])
 
 # Export groups
 with open('mainapp_group.csv', mode='w') as csvfile:

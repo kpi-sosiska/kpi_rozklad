@@ -86,7 +86,7 @@ def _parse_lessons(semestrs_htmls):
                 subjects.append(Subject(name=link.text, url_name=href.removeprefix('http://wiki.kpi.ua/index.php/')))
 
             if href.startswith('/Schedules'):
-                teachers.append(Teacher(name=link.text, uuid_rozklad=get_rozklad_uuid(href)))
+                teachers.append(Teacher.create(name=link.text, uuid_rozklad=get_rozklad_uuid(href)))
 
             if href.startswith('http://maps'):
                 room, _, type_ = link.text.partition(' ')

@@ -6,7 +6,7 @@ import aiohttp
 from parserapp.parser.scrappers import RozkladRetryException
 
 
-def async_bunch(coros, bunch_size=2):
+def async_bunch(coros, bunch_size=5):
     for i in range(0, len(coros), bunch_size):
         tasks = [asyncio.create_task(coro) for coro in coros[i:i+bunch_size]]
         for t in asyncio.as_completed(tasks):

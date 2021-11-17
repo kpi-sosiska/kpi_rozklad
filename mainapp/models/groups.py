@@ -1,8 +1,10 @@
+import logging
 import re
 from collections import namedtuple
+from contextlib import suppress
 from functools import cached_property
 
-from django.db import models, transaction
+from django.db import DatabaseError, models, transaction
 
 
 class Faculty(models.Model):
@@ -82,12 +84,13 @@ class Group(models.Model):
         return cls.GroupCode(*cls.RE_GROUP_CODE.search(name).groups())
 
     def save_with_lessons(self, lessons):
-        with transaction.atomic():
-            self.save()
-            self.lessons.all().delete()
-            for lesson in lessons:
-                lesson.teacher.save(update_fields=['name'])  # d on't delete teacher name_full when parse groups
-                lesson.room.save()
-                lesson.subject.save()
-                lesson.group = self
-                lesson.save()
+        # with transaction.atomic():  # don't use atomic because save with update_fields may crash all transaction
+        self.save()
+        self.lessons.all().delete()
+        for lesson in lessons:
+            # with suppress(DatabaseError):
+            lesson.teacher.save()  # don't delete teacher name_full when parse groups
+            lesson.room.save()
+            lesson.subject.save()
+            lesson.group = self
+            lesson.save()

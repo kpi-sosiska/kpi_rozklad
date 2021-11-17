@@ -7,11 +7,11 @@ from parserapp.parser.parser import save_faculties_and_cathedras, parse_and_save
 
 
 async def main():
-    session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=20))
+    session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=15))
 
     await save_faculties_and_cathedras()
-    await parse_and_save_all_groups(session, skip_saved=True, skip_empty=True)
-    await update_all_teachers(session, only_without_fullname=True)
+    await parse_and_save_all_groups(session) #, skip_saved=True, skip_empty=True)
+    await update_all_teachers(session) #, only_without_fullname=True)
     update_subjects()
 
     await session.close()

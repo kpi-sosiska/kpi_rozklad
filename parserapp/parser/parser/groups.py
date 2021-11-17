@@ -55,7 +55,7 @@ async def _parse_groups_by_name(group_name, session):
     rozklad_groups = [g for g in rozklad_groups if g._lessons]
     if not rozklad_groups:
         open('parser/stuff/rozklad_empty.txt', 'a').write(group_name + '\n')
-        print("ROZKLAD NO GROUP ", group_name)
+        print("ROZKLAD EMPTY ", group_name)
         return
 
     campus_groups = await _find_campus_groups(group_name)

@@ -26,6 +26,7 @@ async def update_teacher(teacher_model, session):
         return
 
     teacher_model.name_full = full_name
+    teacher_model.cathedras_rozklad = "\n".join(cathedras)
     teacher_model.cathedras.set(_get_cathedras(cathedras, groups), clear=True)
 
     teacher_model.save()

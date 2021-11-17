@@ -2,7 +2,7 @@ import asyncio
 import json
 
 
-alphabet = 'абвгдеєжзиіїйклмнопрстуфчцчшщюяь'
+alphabet = 'абвгдеєжзиіїйклмнопрстуфчцчшщюяь'  # todo блять
 
 
 async def get_groups_list(session):
