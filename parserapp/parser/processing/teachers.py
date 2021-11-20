@@ -4,7 +4,7 @@ from operator import or_
 from django.db.models import Count, Q
 
 from mainapp.models import Teacher, Cathedra, Faculty
-from parserapp.parser.parser.utils import try_, async_bunch
+from parserapp.parser.processing.utils import try_, async_bunch
 from parserapp.parser.scrappers import get_teacher
 
 

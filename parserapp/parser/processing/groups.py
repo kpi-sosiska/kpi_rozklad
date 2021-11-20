@@ -1,8 +1,8 @@
 import aiohttp
 
 from mainapp.models import Group
-from parserapp.parser.parser.groups_merge import _merge_rozklad_with_campus
-from parserapp.parser.parser.utils import try_
+from parserapp.parser.processing.groups_merge import _merge_rozklad_with_campus
+from parserapp.parser.processing.utils import try_
 from parserapp.parser.scrappers import get_groups_by_name, get_group_by_url, get_groups_list, find_group
 from parserapp.parser.scrappers.rozklad.utils import RozkladRetryException
 

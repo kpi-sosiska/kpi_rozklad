@@ -2,7 +2,7 @@ import asyncio
 
 import aiohttp
 
-from parserapp.parser.parser import save_faculties_and_cathedras, parse_and_save_all_groups,\
+from parserapp.parser.processing import save_faculties_and_cathedras, parse_and_save_all_groups,\
     update_all_teachers, update_subjects
 
 
