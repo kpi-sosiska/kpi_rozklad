@@ -5,7 +5,17 @@ from graphene_django.filter import DjangoFilterConnectionField
 from mainapp import models
 
 
+class Lesson(DjangoObjectType):
+    class Meta:
+        model = models.Lesson
+        interfaces = (graphene.relay.Node,)
+        convert_choices_to_enum = False
+        filter_fields = ['semestr', 'week', 'day', 'num', ]
+
+
 class Group(DjangoObjectType):
+    lesson_ = DjangoFilterConnectionField(Lesson)
+
     prefix = graphene.String(source='prefix')
     okr = graphene.String(source='okr')
     type = graphene.String(source='type')
@@ -26,12 +36,6 @@ class Faculty(DjangoObjectType):
 class Cathedra(DjangoObjectType):
     class Meta:
         model = models.Cathedra
-
-
-class Lesson(DjangoObjectType):
-    class Meta:
-        model = models.Lesson
-        convert_choices_to_enum = False
 
 
 class Teacher(DjangoObjectType):

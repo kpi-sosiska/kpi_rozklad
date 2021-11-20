@@ -3,5 +3,9 @@ beautifulsoup4==4.9.3
 Django==3.2.4
 lxml==4.6.3
 pandas~=1.2.4
-graphene_django
 string_grouper
+
+graphql-core==2.2.1
+graphene==2.1.8
+graphene_django
+django-filter
