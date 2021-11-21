@@ -9,36 +9,36 @@ def _range2choices(start, stop):
 
 class Teacher(models.Model):
     POSITIONS_CHOICE = {
-        'ас.': 'асистент',
-        'доц.': 'доцент',
-        'вик.': 'викладач',
-        'ст.вик.': 'старший викладач',
-        'проф.': 'професор',
-        'зав.каф.': 'зав. кафедрою',
-        'дек.': 'декан',
-        # 'пос.': '',
+        'ас': 'асистент',
+        'доц': 'доцент',
+        'вик': 'викладач',
+        'ст.вик': 'старший викладач',
+        'проф': 'професор',
+        'зав.каф': 'зав. кафедрою',
+        'дек': 'декан',
     }
 
+    id_campus = models.PositiveSmallIntegerField(null=True, blank=True)
+    slug_campus = models.CharField(max_length=10, null=True, blank=True)
+
     uuid_rozklad = models.CharField(max_length=36, primary_key=True)
-    position = models.CharField(max_length=10, choices=POSITIONS_CHOICE.items(), null=True)
+    position = models.CharField(max_length=10, choices=POSITIONS_CHOICE.items(), null=True, blank=True)
+
     name = models.CharField(max_length=500)
     name_full = models.CharField(max_length=500, null=True, blank=True)
+    name_campus = models.CharField(max_length=500, null=True, blank=True)
+
     cathedras_rozklad = models.CharField(max_length=500, null=True, blank=True)
     cathedras = models.ManyToManyField(Cathedra, related_name='teachers')
-
-    @classmethod
-    def create(cls, uuid_rozklad, name):
-        name = name.removeprefix('пос.')
-        position = None
-        for pos in cls.POSITIONS_CHOICE:
-            if name.startswith(pos):
-                name = name.removeprefix(pos)
-                position = pos
-        return cls(uuid_rozklad=uuid_rozklad, name=name.strip(), position=position)
 
     @property
     def url_rozklad(self):
         return "http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?v=" + self.uuid_rozklad
+
+    @property
+    def campus_photo(self):
+        if self.id_campus:
+            return f"https://api.campus.kpi.ua/Account/{self.id_campus}/ProfileImage"
 
 
 class Room(models.Model):

@@ -54,6 +54,11 @@ class Group(models.Model):
     def url_rozklad(self):
         return "http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?v=" + self.uuid_rozklad
 
+    @property
+    def name_rozklad_normalized(self):
+        p = self._parse_name(self.name_rozklad)
+        return f"{p.prefix}-{p.m1 or ''}{p.year}{p.number}{p.m2 or ''}{p.m3 or ''}"
+
     @cached_property
     def _group_info(self):
         return self._parse_name(self.name)

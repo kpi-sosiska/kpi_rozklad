@@ -1,4 +1,4 @@
-from parserapp.parser.scrappers.campus.groups import find_group, get_cathedras, get_faculties
+from parserapp.parser.scrappers.campus.groups import find_group, get_cathedras, get_faculties, get_teachers
 from parserapp.parser.scrappers.campus.disciplines import get_disciplines
 
 from parserapp.parser.scrappers.rozklad.group import get_groups_by_name, get_group_by_url

@@ -1,13 +1,8 @@
-import aiohttp
 
-from mainapp.models import Faculty, Cathedra, Group
-
-session = aiohttp.ClientSession()
+from mainapp.models import Faculty, Cathedra, Group, Teacher
+from parserapp.parser.scrappers.campus.utils import _req
 
 
-async def _req(url, **data):
-    async with session.get(url, data=data) as resp:
-        return await resp.json()
 
 
 async def get_faculties():
@@ -50,3 +45,23 @@ async def find_group(group_name):
         )
         for f in res
     ]
+
+
+
+async def get_teachers(teacher_name):
+    url = 'http://api.campus.kpi.ua/Intellect/Find'
+    res = await _req(url, value=teacher_name, pageSize=1000)
+
+    teachers = []
+    for f in res['Data']:
+        cathedras = [p['Subdivision']['Id'] for p in f['Positions']]
+        id_campus = int(f['Photo'].split("https://api.campus.kpi.ua/Account/")[1].split("/ProfileImage")[0])
+        t = Teacher(
+            id_campus=id_campus,
+            slug_campus=f['UserIdentifier'],
+            name_campus=f['FullName'],
+        )
+        t._catherdas = cathedras
+        teachers.append(t)
+
+    return teachers

@@ -86,7 +86,8 @@ def _parse_lessons(semestrs_htmls):
                 subjects.append(Subject(name=link.text, url_name=href.removeprefix('http://wiki.kpi.ua/index.php/')))
 
             if href.startswith('/Schedules'):
-                teachers.append(Teacher.create(name=link.text, uuid_rozklad=get_rozklad_uuid(href)))
+                name, position = _parse_teacher_position(link.text)
+                teachers.append(Teacher(name=name, position=position, uuid_rozklad=get_rozklad_uuid(href)))
 
             if href.startswith('http://maps'):
                 room, _, type_ = link.text.partition(' ')
@@ -112,3 +113,23 @@ def _parse_lessons(semestrs_htmls):
 
                 for day_i, td in enumerate(tds):
                     yield from parse_lesson(td)
+
+
+POSITIONS = {
+    'ас.': 'асистент',
+    'доц.': 'доцент',
+    'вик.': 'викладач',
+    'ст.вик.': 'старший викладач',
+    'проф.': 'професор',
+    'зав.каф.': 'зав. кафедрою',
+    'дек.': 'декан',
+    # 'пос.': '',
+}
+
+
+def _parse_teacher_position(name):
+    name = name.removeprefix('пос.')
+    for pos_r, pos_norm in POSITIONS.items():
+        if name.startswith(pos_r):
+            return name.removeprefix(pos_r).strip(), pos_norm
+    return name, None
