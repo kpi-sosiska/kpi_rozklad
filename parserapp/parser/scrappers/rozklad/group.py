@@ -99,7 +99,7 @@ def _parse_lessons(semestrs_htmls):
             types = types * len(subjects)
             rooms = rooms * len(subjects)
 
-        elif len(subjects) > 1 and len(types) != len(subjects):
+        elif 1 < len(subjects) != len(types):
             raise Exception('suka blyad')
 
         for su, te, ro, ty in zip(subjects, teachers, rooms, types):
