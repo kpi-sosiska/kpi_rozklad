@@ -19,7 +19,7 @@ async def save_faculties_and_cathedras():
 
 def get_short_name(cath, fac):
     if ' при ' in cath.name:
-        return cath.ame.split(' при ')[0]
+        return cath.name.split(' при ')[0]
 
     name = cath.name.removesuffix(fac.name)
     name = name.removesuffix(' ІПСА')
