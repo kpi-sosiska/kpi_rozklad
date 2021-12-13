@@ -97,10 +97,6 @@ def _parse_lessons(semestrs_htmls):
                 rooms.append(Room(name=room, lat=lat, lon=lon))
                 types.append(type_)
 
-        if len(subjects) > 1 and len(types) == 1:
-            types = types * len(subjects)
-            rooms = rooms * len(subjects)
-
         for su, te, ro, ty in zip_longest(subjects, teachers, rooms, types):
             yield Lesson(
                 subject=su, teacher=te, room=ro, lesson_type=ty,

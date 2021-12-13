@@ -58,10 +58,9 @@ class Subject(models.Model):
 
 
 class Lesson(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='lessons')
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='lessons')
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='lessons')
-
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='lessons', null=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='lessons', null=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='lessons', null=True)
     lesson_type = models.CharField(max_length=50, null=True)
 
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='lessons')
