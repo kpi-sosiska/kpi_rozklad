@@ -94,8 +94,15 @@ class Group(models.Model):
         self.lessons.all().delete()
         for lesson in lessons:
             # with suppress(DatabaseError):
-            lesson.teacher.save()  # don't delete teacher name_full when parse groups
-            lesson.room.save()
-            lesson.subject.save()
+
+            if lesson.teacher is not None:
+                lesson.teacher.save()  # don't delete teacher name_full when parse groups
+
+            if lesson.room is not None:
+                lesson.room.save()
+
+            if lesson.subject is not None:
+                lesson.subject.save()
+
             lesson.group = self
             lesson.save()

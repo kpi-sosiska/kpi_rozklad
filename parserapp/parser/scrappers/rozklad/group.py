@@ -1,3 +1,5 @@
+from itertools import zip_longest
+
 from bs4 import BeautifulSoup
 
 from mainapp.models import Group, Lesson, Teacher, Room, Subject
@@ -95,7 +97,7 @@ def _parse_lessons(semestrs_htmls):
                 rooms.append(Room(name=room, lat=lat, lon=lon))
                 types.append(type_)
 
-        for su, te, ro, ty in zip(subjects, teachers, rooms, types):
+        for su, te, ro, ty in zip_longest(subjects, teachers, rooms, types):
             yield Lesson(
                 subject=su, teacher=te, room=ro, lesson_type=ty,
                 semestr=semestr_i + 1, week=week_i + 1,
