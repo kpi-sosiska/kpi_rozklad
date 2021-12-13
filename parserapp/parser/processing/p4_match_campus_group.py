@@ -59,7 +59,7 @@ async def _merge_rozklad_with_campus(rozklad_groups, campus_groups):
 
 async def _match(rozklad_groups, campus_groups):
     for g in rozklad_groups:
-        g.disciplines = {_normalize_subject_name(les.subject.name_normalized) for les in g.lessons.all()}
+        g.disciplines = {_normalize_subject_name(les.subject.name_normalized) for les in g.lessons.filter(subject__isnull=False)}
 
     for g in campus_groups:
         g.disciplines = {_normalize_subject_name(n) for n in await get_disciplines(g.cathedra.name_campus)}
