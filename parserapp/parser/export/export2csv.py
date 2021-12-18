@@ -22,7 +22,7 @@ with open('mainapp_teacher.csv', mode='w') as csvfile:
 
     writer.writerow(['uuid', 'name', 'is_eng', 'lessons'])
     for teacher in Teacher.objects.all():
-        lessons = teacher.lessons.all().values_list('subject__name_normalized', flat=True).distinct()
+        lessons = teacher.lessons.filter(subject__isnull=False).values_list('subject__name_normalized', flat=True).distinct()
         lessons = '\n'.join(sorted(lessons))
         is_eng = int(bool(is_eng_re.findall(lessons)))
 
