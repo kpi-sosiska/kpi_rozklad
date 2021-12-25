@@ -20,7 +20,7 @@ with open('mainapp_teacher.csv', mode='w') as csvfile:
     is_eng_re = re.compile(r"інозем|іншомов|ін\. мова", flags=re.IGNORECASE)
     writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-    writer.writerow(['uuid', 'name', 'is_eng', 'lessons'])
+    writer.writerow(['uuid', 'name', 'is_eng', 'cathedra', 'lessons'])
     for teacher in Teacher.objects.all():
         lessons = teacher.lessons.filter(subject__isnull=False).values_list('subject__name_normalized', flat=True).distinct()
         lessons = '\n'.join(sorted(lessons))
