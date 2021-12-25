@@ -40,7 +40,7 @@ with open('mainapp_faculty.csv', mode='w') as csvfile:
 with open('mainapp_group.csv', mode='w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-    writer.writerow(['uuid', 'name', 'faculty_id'])
+    writer.writerow(['id', 'name', 'faculty_id'])
     for group in Group.objects.all():
         fid = group.cathedra.faculty_id if group.cathedra else None
         writer.writerow([group.uuid_rozklad, group.name_rozklad, fid])
