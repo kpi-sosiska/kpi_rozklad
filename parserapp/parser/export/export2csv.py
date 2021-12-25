@@ -48,9 +48,11 @@ with open('mainapp_group.csv', mode='w') as csvfile:
 # Export teacherngroup
 with open('mainapp_teacherngroup.csv', mode='w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    counter = 0
 
-    writer.writerow(['group_id', 'teacher_id'])
+    writer.writerow(['id', 'group_id', 'teacher_id'])
     r = Group.objects.filter(lessons__semestr=2).values_list('uuid_rozklad', 'lessons__teacher_id').distinct()
     for group_id, teacher_id in r:
-        writer.writerow([group_id, teacher_id])
+        counter += 1
+        writer.writerow([counter, group_id, teacher_id])
 
