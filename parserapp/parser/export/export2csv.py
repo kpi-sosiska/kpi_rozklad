@@ -20,13 +20,14 @@ with open('mainapp_teacher.csv', mode='w') as csvfile:
     is_eng_re = re.compile(r"інозем|іншомов|ін\. мова", flags=re.IGNORECASE)
     writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-    writer.writerow(['id', 'name', 'is_eng', 'cathedras', 'lessons', 'univer_id', 'slug'])
+    writer.writerow(['id', 'name', 'photo', 'is_eng', 'cathedras', 'lessons', 'univer_id', 'slug'])
     for teacher in Teacher.objects.all():
         lessons = teacher.lessons.filter(subject__isnull=False).values_list('subject__name_normalized', flat=True).distinct()
         lessons = '\n'.join(sorted(lessons))
         is_eng = int(bool(is_eng_re.findall(lessons)))
+        photo = f'https://api.campus.kpi.ua/Account/{teacher.id_campus}/ProfileImage' if teacher.id_campus else None
 
-        writer.writerow([teacher.uuid_rozklad, teacher.name_full, is_eng, teacher.cathedras_rozklad, lessons, teacher.id_campus, teacher.slug_campus])
+        writer.writerow([teacher.uuid_rozklad, teacher.name_full, photo, is_eng, teacher.cathedras_rozklad, lessons, teacher.id_campus, teacher.slug_campus])
 
 # Export faculties
 with open('mainapp_faculty.csv', mode='w') as csvfile:
