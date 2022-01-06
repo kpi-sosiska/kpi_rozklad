@@ -51,7 +51,7 @@ with open('mainapp_teacherngroup.csv', mode='w') as csvfile:
     counter = 0
 
     writer.writerow(['id', 'group_id', 'teacher_id'])
-    r = Group.objects.filter(lessons__semestr=2).values_list('uuid_rozklad', 'lessons__teacher_id').distinct()
+    r = Group.objects.filter(lessons__semestr=1).values_list('uuid_rozklad', 'lessons__teacher_id').distinct()
     for group_id, teacher_id in r:
         counter += 1
         writer.writerow([counter, group_id, teacher_id])
