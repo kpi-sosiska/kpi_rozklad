@@ -106,3 +106,7 @@ class Group(models.Model):
 
             lesson.group = self
             lesson.save()
+
+    @classmethod
+    def find_by_name_rozklad(cls, name):
+        return cls.objects.filter(name_rozklad=name).first()
