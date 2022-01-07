@@ -17,7 +17,7 @@ from mainapp.models.groups import Cathedra
 
 # Export teachers
 with open('mainapp_teacher.csv', mode='w') as csvfile:
-    is_eng_re = re.compile(r"інозем|іншомов|ін\. мова", flags=re.IGNORECASE)
+    is_eng_re = re.compile(r"інозем|іншомов|ін\. мова|англійська", flags=re.IGNORECASE)
     writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
     writer.writerow(['id', 'name', 'photo', 'is_eng', 'cathedras', 'lessons', 'univer_id', 'slug'])
@@ -27,7 +27,7 @@ with open('mainapp_teacher.csv', mode='w') as csvfile:
         is_eng = int(bool(is_eng_re.findall(lessons)))
         photo = f'https://api.campus.kpi.ua/Account/{teacher.id_campus}/ProfileImage' if teacher.id_campus else None
 
-        writer.writerow([teacher.uuid_rozklad, teacher.name_full, photo, is_eng, teacher.cathedras_rozklad, lessons, teacher.id_campus, teacher.slug_campus])
+        writer.writerow([teacher.uuid_rozklad, teacher.name_full, photo, is_eng, teacher.cathedras_rozklad, lessons, 1, teacher.slug_campus])
 
 # Export faculties
 with open('mainapp_faculty.csv', mode='w') as csvfile:
