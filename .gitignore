@@ -2,3 +2,7 @@
 db.sqlite3
 .idea
 .mypy_cache
+/parserapp/parser/export/mainapp_group.csv
+/parserapp/parser/export/mainapp_teacher.csv
+/parserapp/parser/export/mainapp_teacherngroup.csv
+/parserapp/parser/stuff

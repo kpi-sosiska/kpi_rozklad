@@ -17,16 +17,17 @@ from mainapp.models.groups import Cathedra
 
 # Export teachers
 with open('mainapp_teacher.csv', mode='w') as csvfile:
-    is_eng_re = re.compile(r"інозем|іншомов|ін\. мова", flags=re.IGNORECASE)
+    is_eng_re = re.compile(r"інозем|іншомов|ін\. мова|англійська", flags=re.IGNORECASE)
     writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-    writer.writerow(['uuid', 'name', 'is_eng', 'lessons'])
+    writer.writerow(['id', 'name', 'photo', 'is_eng', 'cathedras', 'lessons', 'univer_id', 'slug'])
     for teacher in Teacher.objects.all():
         lessons = teacher.lessons.filter(subject__isnull=False).values_list('subject__name_normalized', flat=True).distinct()
         lessons = '\n'.join(sorted(lessons))
         is_eng = int(bool(is_eng_re.findall(lessons)))
+        photo = f'https://api.campus.kpi.ua/Account/{teacher.id_campus}/ProfileImage' if teacher.id_campus else None
 
-        writer.writerow([teacher.uuid_rozklad, teacher.name_full, is_eng, teacher.cathedras_rozklad, lessons])
+        writer.writerow([teacher.uuid_rozklad, teacher.name_full, photo, is_eng, teacher.cathedras_rozklad, lessons, 1, teacher.slug_campus])
 
 # Export faculties
 with open('mainapp_faculty.csv', mode='w') as csvfile:
@@ -40,7 +41,7 @@ with open('mainapp_faculty.csv', mode='w') as csvfile:
 with open('mainapp_group.csv', mode='w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-    writer.writerow(['uuid', 'name', 'faculty_id'])
+    writer.writerow(['id', 'name', 'faculty_id'])
     for group in Group.objects.all():
         fid = group.cathedra.faculty_id if group.cathedra else None
         writer.writerow([group.uuid_rozklad, group.name_rozklad, fid])
@@ -48,9 +49,12 @@ with open('mainapp_group.csv', mode='w') as csvfile:
 # Export teacherngroup
 with open('mainapp_teacherngroup.csv', mode='w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    counter = 0
 
-    writer.writerow(['group_id', 'teacher_id'])
-    r = Group.objects.filter(lessons__semestr=2).values_list('uuid_rozklad', 'lessons__teacher_id').distinct()
+    writer.writerow(['id', 'group_id', 'teacher_id'])
+    r = Group.objects.filter(lessons__semestr=1).values_list('uuid_rozklad', 'lessons__teacher_id').distinct()
     for group_id, teacher_id in r:
-        writer.writerow([group_id, teacher_id])
+        counter += 1
+        if teacher_id is not None:
+            writer.writerow([counter, group_id, teacher_id])
 
